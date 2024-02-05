@@ -1,17 +1,19 @@
 const todoInput = document.querySelector('.todo-input');
 const todoButton = document.querySelector('.todo-button');
 const todoList = document.querySelector('.todo-list');
+const filterOption = document.querySelector('.filter-todo');
 
 
 
 todoButton.addEventListener('click', addTodo);
 todoList.addEventListener('click', deleteCheck);
+filterOption.addEventListener('click', todoSetsChange);
 
 
 
-function addTodo(event){
+function addTodo(event) {
     event.preventDefault();
-    
+
     //Creating div for todo
     const todoDiv = document.createElement('div');
     todoDiv.classList.add('todo');
@@ -49,18 +51,47 @@ function addTodo(event){
 function deleteCheck(event) {
     const item = event.target;
 
-    if(item.classList[0] === 'remove-button'){
+    if (item.classList[0] === 'remove-button') {
         const todo = item.parentElement;
         todo.classList.add('fall');
-        todo.addEventListener('transitionend', function(){
+        todo.addEventListener('transitionend', function () {
             todo.remove();
         });
-        
+
     }
 
-    if(item.classList[0] === 'done-button'){
+    if (item.classList[0] === 'done-button') {
         const todo = item.parentElement;
         todo.classList.toggle('completed');
-        
+
+    }
+}
+
+function todoSetsChange(event) {
+    const todos = todoList.children;
+    console.log(todos);
+
+    for (let i = 0; i < todos.length; i++) {
+        const todo = todos[i];
+
+        switch (event.target.value) {
+            case 'all':
+                todo.style.display = 'flex';
+                break;
+            case 'completed':
+                if (todo.classList.contains('completed')) {
+                    todo.style.display = 'flex';
+                } else {
+                    todo.style.display = 'none';
+                }
+                break;
+            case 'uncompleted':
+                if (!todo.classList.contains('completed')) {
+                    todo.style.display = 'flex';
+                } else {
+                    todo.style.display = 'none';
+                }
+                break;
+        }
     }
 }
